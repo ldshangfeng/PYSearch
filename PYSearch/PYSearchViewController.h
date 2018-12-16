@@ -405,6 +405,11 @@ didSelectSearchSuggestionAtIndex:(NSInteger)index
 @property (nonatomic, assign) BOOL showKeyboardWhenReturnSearchResult;
 
 /**
+ Whether show keyboard when enter to search view, default is YES.
+ */
+@property (nonatomic, assign) BOOL showKeyboardWhenEnterSearchView;
+
+/**
  Creates an instance of searchViewContoller with popular searches and search bar's placeholder.
 
  @param hotSearches     popular searchs

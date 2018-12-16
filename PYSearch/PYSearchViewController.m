@@ -216,7 +216,7 @@
         }
     }
     
-    if (NULL == self.searchResultController.parentViewController) {
+    if (NULL == self.searchResultController.parentViewController && self.showKeyboardWhenEnterSearchView) {
         [self.searchBar becomeFirstResponder];
     } else if (YES == self.showKeyboardWhenReturnSearchResult) {
         [self.searchBar becomeFirstResponder];
@@ -440,6 +440,7 @@
     self.showSearchResultWhenSearchTextChanged = NO;
     self.showSearchResultWhenSearchBarRefocused = NO;
     self.showKeyboardWhenReturnSearchResult = YES;
+    self.showKeyboardWhenEnterSearchView = NO;
     self.removeSpaceOnSearchString = YES;
     self.searchBarCornerRadius = 0.0;
     
