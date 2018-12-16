@@ -216,8 +216,10 @@
         }
     }
     
-    if (NULL == self.searchResultController.parentViewController && self.showKeyboardWhenEnterSearchView) {
-        [self.searchBar becomeFirstResponder];
+    if (NULL == self.searchResultController.parentViewController) {
+        if (self.showKeyboardWhenEnterSearchView) {
+            [self.searchBar becomeFirstResponder];
+        }
     } else if (YES == self.showKeyboardWhenReturnSearchResult) {
         [self.searchBar becomeFirstResponder];
     }
@@ -1265,7 +1267,6 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-        cell.textLabel.textColor = PYTextColor;
         cell.textLabel.font = [UIFont systemFontOfSize:14];
         cell.backgroundColor = [UIColor clearColor];
         
@@ -1287,8 +1288,17 @@
     }
     
     cell.imageView.image = [NSBundle py_imageNamed:@"search_history"];
-    cell.textLabel.text = self.searchHistories[indexPath.row];
-    
+    NSString *text =  self.searchHistories[indexPath.row];
+    UILabel *textLabel = cell.textLabel;
+    textLabel.text = text;
+    if ([UIColor py_isValidateHexColor:text]) {
+        UIColor *backgroundColor = [UIColor py_colorWithHexString:text];
+        textLabel.backgroundColor = backgroundColor;
+        textLabel.textColor = [UIColor py_isDarkColor:backgroundColor] ? [UIColor whiteColor]: PYTextColor;
+    } else {
+        textLabel.textColor = PYTextColor;
+        textLabel.backgroundColor = [UIColor clearColor];
+    }
     return cell;
 }
 

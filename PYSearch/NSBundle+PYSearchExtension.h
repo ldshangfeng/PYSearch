@@ -32,4 +32,14 @@
  */
 + (UIImage *)py_imageNamed:(NSString *)name;
 
+/**
+ Get the image with the UIColor
+ 
+ @param color of image
+ @param rect of image
+ @return a image
+ */
+
++ (UIImage *)py_imageWithUIColor:(UIColor *)color rect:(CGRect)rect;
+
 @end

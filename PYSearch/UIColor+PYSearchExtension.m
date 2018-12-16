@@ -55,4 +55,44 @@
     return [[self py_colorWithHexString:hexString] colorWithAlphaComponent:alpha];
 }
 
++ (BOOL)py_isValidateHexColor:(NSString *)hexColor {
+    NSString *hexRegex = @"^#([0-9a-fA-F]{6})$";
+    NSPredicate *hexTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", hexRegex];
+    return [hexTest evaluateWithObject:hexColor];
+}
+
++ (BOOL)py_isDarkColor:(UIColor *)color {
+    CGFloat alpha = [self getAlphaWithColor:color];
+    if (alpha<10e-5) {
+        return YES;
+    }
+    
+    const CGFloat *componentColors = CGColorGetComponents(color.CGColor);
+    
+    CGFloat colorBrightness = ((componentColors[0] * 299) + (componentColors[1] * 587) + (componentColors[2] * 114)) / 1000;
+    
+    if (colorBrightness < 0.5){
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+// 获取RGB和Alpha
++ (NSArray *)getRGBWithColor:(UIColor *)color {
+    CGFloat red = 0.0;
+    CGFloat green = 0.0;
+    CGFloat blue = 0.0;
+    CGFloat alpha = 0.0;
+    [color getRed:&red green:&green blue:&blue alpha:&alpha];
+    return @[@(red), @(green), @(blue), @(alpha)];
+}
+
++ (CGFloat)getAlphaWithColor:(UIColor *)color {
+    NSArray *rgba = [self getRGBWithColor:color];
+    return [rgba[3] floatValue];
+}
+
+
+
 @end

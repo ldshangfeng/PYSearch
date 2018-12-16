@@ -125,7 +125,18 @@
         line.py_width = PYScreenW;
         [cell.contentView addSubview:line];
     }
-    cell.imageView.image = [NSBundle py_imageNamed:@"search"];
+    NSString *text =  self.searchSuggestions[indexPath.row];
+    UIImageView *imageView = cell.imageView;
+    if ([UIColor py_isValidateHexColor:text]) {
+        imageView.image = [NSBundle py_imageWithUIColor:[UIColor py_colorWithHexString:text] rect:CGRectMake(0, 0, 24, 24)];
+        CALayer *layer = imageView.layer;
+        layer.masksToBounds = YES;
+        layer.cornerRadius = 6;
+        layer.borderColor = [UIColor py_colorWithHexString:@"F0F0F0"].CGColor;
+        layer.borderWidth = 0.5;
+    } else {
+        imageView.image = [NSBundle py_imageNamed:@"search"];
+    }
     cell.textLabel.text = self.searchSuggestions[indexPath.row];
     return cell;
 }

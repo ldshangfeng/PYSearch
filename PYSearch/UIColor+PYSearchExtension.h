@@ -25,4 +25,8 @@
  */
 + (instancetype)py_colorWithHexString:(NSString *)hexString alpha:(CGFloat)alpha;
 
++ (BOOL)py_isValidateHexColor:(NSString *)hexColor;
+
++ (BOOL)py_isDarkColor:(UIColor *)color;
+
 @end
