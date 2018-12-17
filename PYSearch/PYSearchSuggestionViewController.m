@@ -109,7 +109,7 @@
         UITableViewCell *cell= [self.dataSource searchSuggestionView:tableView cellForRowAtIndexPath:indexPath];
         if (cell) return cell;
     }
-    
+
     static NSString *cellID = @"PYSearchSuggestionCellID";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
@@ -128,25 +128,20 @@
     NSString *text =  self.searchSuggestions[indexPath.row];
     UIImageView *imageView = cell.imageView;
     if ([UIColor py_isValidateHexColor:text]) {
-        //        imageView.image = [NSBundle py_imageWithUIColor:[UIColor py_colorWithHexString:text] rect:CGRectMake(0, 0, 24, 24)];
-        //        CALayer *layer = imageView.layer;
-        //        layer.masksToBounds = YES;
-        //        layer.cornerRadius = 6;
-        //        layer.borderColor = [UIColor py_colorWithHexString:@"F0F0F0"].CGColor;
-        //        layer.borderWidth = 0.5;
-        
-        //        imageView.image = [NSBundle py_imageNamed:@"search"];
         cell.textLabel.backgroundColor = [UIColor py_colorWithHexString:text];
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         [paragraphStyle setFirstLineHeadIndent:24.0];
         [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [text length])];
         [cell.textLabel setAttributedText:attributedString];
+        cell.textLabel.textColor = [UIColor py_isDarkColor:cell.textLabel.backgroundColor] ? [UIColor whiteColor]: [UIColor darkGrayColor];
+        imageView.image = nil;
     } else {
+        cell.textLabel.backgroundColor = [UIColor whiteColor];
         imageView.image = [NSBundle py_imageNamed:@"search"];
         cell.textLabel.text = text;
+        cell.textLabel.textColor = [UIColor darkGrayColor];
     }
-    cell.textLabel.textColor = [UIColor py_isDarkColor:cell.textLabel.backgroundColor] ? [UIColor whiteColor]: [UIColor darkGrayColor];
     return cell;
 }
 
