@@ -168,10 +168,11 @@
     // More details : https://github.com/iphone5solo/PYSearch/issues/108
     if (@available(iOS 11.0, *)) { // iOS 11
         if (self.searchViewControllerShowMode == PYSearchViewControllerShowModeModal) {
+            NSLayoutConstraint *leftLayoutConstraint = [searchBar.leftAnchor constraintEqualToAnchor:titleView.leftAnchor];
             if (navigationBarLayoutMargins.left > PYSEARCH_MARGIN) {
-                searchBar.py_x = 0;
+                [leftLayoutConstraint setConstant:0];
             } else {
-                searchBar.py_x = PYSEARCH_MARGIN - navigationBarLayoutMargins.left;
+                [leftLayoutConstraint setConstant:PYSEARCH_MARGIN - navigationBarLayoutMargins.left];
             }
         }
         searchBar.py_height = self.view.py_width > self.view.py_height ? 24 : 30;
@@ -203,6 +204,9 @@
 {
     [super viewWillAppear:animated];
     
+    // Fixed search history view may not be displayed or other problem at the first time.
+    [self setSearchHistoryStyle:self.searchHistoryStyle];  // in method viewDidAppear，the view flashes when searchHistory count > 0
+    
     if (self.cancelButtonWidth == 0) { // Just adapt iOS 11.2
         [self viewDidLayoutSubviews];
     }
@@ -229,6 +233,14 @@
             self.navigationController.interactivePopGestureRecognizer.delegate = self;
         }
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Fixed search history view may not be displayed or other problem at the first time.
+    [self setSearchHistoryStyle:self.searchHistoryStyle];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -1009,6 +1021,7 @@
 {
     _searchViewControllerShowMode = searchViewControllerShowMode;
     if (_searchViewControllerShowMode == PYSearchViewControllerShowModeModal) { // modal
+        self.navigationItem.hidesBackButton = YES;
         self.navigationItem.rightBarButtonItem = _cancelBarButtonItem;
         self.navigationItem.leftBarButtonItem = nil;
     } else if (_searchViewControllerShowMode == PYSearchViewControllerShowModePush) { // push
